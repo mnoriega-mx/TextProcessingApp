@@ -9,43 +9,60 @@
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </head>
 <body>
-    <h1>Text Processing App</h1>
+    <div class="main-container">
+        <form action="/process" method="post" enctype="multipart/form-data" class="content-container">
+            <div class="title-container">
+                <!-- Custom file upload button for file1 -->
+                <div class="file-upload-container">
+                    <label for="file1" class="custom-file-upload">
+                        <button type="button" class="upload-button" id="file1-button">Text 1</button>
+                        <input type="file" id="file1" name="file1" style="display: none;" required>
+                    </label>
+                </div>
+                
+                <h1 class="title">Text Processing App</h1>
+    
+                <!-- Custom file upload button for file2 -->
+                <div class="file-upload-container">
+                    <label for="file2" class="custom-file-upload">
+                        <button type="button" class="upload-button" id="file2-button">Text 2</button>
+                        <input type="file" id="file2" name="file2" style="display: none;">
+                    </label>
+                </div>
+            </div>
 
-    <form action="/process" method="post" enctype="multipart/form-data">
-        <label for="file1">Upload First Text File:</label>
-        <input type="file" id="file1" name="file1" required><br><br>
-        
-        <label for="file2">Upload Second Text File (optional):</label>
-        <input type="file" id="file2" name="file2"><br><br>
+            <div class="info-container">
+                <div class="text-display-container">
+                    <div class="text-display">
+                        <pre class="text">{{ text1|safe }}</pre>
+                    </div>
+                    <div class="text-display">
+                        <pre class="text">{{ text2|safe }}</pre>
+                    </div>
+                    <div class="result-display">
+                        <pre class="text">{{ result|safe }}</pre>
+                    </div>
+                </div>
+    
+                <div class="buttons-container">
+                    <!-- Submit buttons for algorithms -->
+                    <button type="submit" name="algorithm" value="LCS" class="algorithm-button">LCS Similarity</button>
+                    <button type="submit" name="algorithm" value="Palindrome" class="algorithm-button">Find Largest Palindrome</button>
+                    <div class="kmp-container">
+                        <input type="text" id="pattern" name="pattern" style="margin: 15px; border-radius: 25px; border: none;">
+                        <button type="submit" name="algorithm" value="KMP" class="kmp-button">KMP Search</button>
+                    </div>
+                </div>
 
-        <!-- Input for KMP pattern search -->
-        <label for="pattern">Pattern for KMP Search:</label>
-        <input type="text" id="pattern" name="pattern"><br><br>
-
-        <!-- Text field for auto-completion -->
-        <label for="autocomplete">Start Typing:</label>
-        <input type="text" id="autocomplete" name="autocomplete" autocomplete="off"><br>
-        <ul id="suggestions"></ul>
-
-        <!-- Buttons to select the algorithm -->
-        <button type="submit" name="algorithm" value="KMP">KMP Search</button>
-        <button type="submit" name="algorithm" value="LCS">LCS Similarity</button>
-        <button type="submit" name="algorithm" value="Palindrome">Find Largest Palindrome</button>
-    </form>
-
-    <div id="results">
-        <h2>First Text File:</h2>
-        <pre>{{ text1|safe }}</pre>
-
-        {% if text2 %}
-        <h2>Second Text File:</h2>
-        <pre>{{ text2|safe }}</pre>
-        {% endif %}
-
-        <h2>Result:</h2>
-        <pre>{{ result|safe }}</pre>
+                <div class="autocomplete-container">
+                    <div class="autocomplete">
+                        <label for="autocomplete" style="align-self: center; font-size: large; padding: 5px;">Auto-Complete Text</label>
+                        <input type="text" id="autocomplete" name="autocomplete" autocomplete="off" style="border-radius: 25px; border-color: orange;"><br>
+                        <ul id="suggestions" style="list-style-type: none;"></ul>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
-
 </body>
 </html>
-

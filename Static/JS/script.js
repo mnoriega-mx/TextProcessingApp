@@ -12,4 +12,13 @@ $(document).ready(function() {
             $('#suggestions').empty();
         }
     });
+
+    document.getElementById('file1-button').addEventListener('click', function() {
+        document.getElementById('file1').click();
+    });
+    
+    // Trigger file2 input on button click
+    document.getElementById('file2-button').addEventListener('click', function() {
+        document.getElementById('file2').click();
+    });
 });

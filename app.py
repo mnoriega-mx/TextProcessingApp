@@ -13,6 +13,9 @@ def index():
 
 @app.route('/process', methods=['POST'])
 def process():
+    if 'file1' not in request.files:
+        return jsonify({"error": "file1 is required"}), 400
+
     text1 = request.files['file1'].read().decode('utf-8')
     text2 = request.files.get('file2')
     if text2:
@@ -20,6 +23,9 @@ def process():
 
     algorithm = request.form['algorithm']
     result = ""
+
+    # Insert words into Trie for auto-completion
+    # (rest of your code)
 
     # Insert words into Trie for auto-completion
     for word in text1.split():
