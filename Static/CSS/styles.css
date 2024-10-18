@@ -39,7 +39,7 @@
     cursor: pointer;
     height: 100%;
     width: 100%;
-    border-radius: 50%;
+    border-radius: 25px;
     margin: 3%;
 }
 
@@ -55,7 +55,7 @@ button {
 .upload-button {
     height: 50%;
     width: 100%;
-    border-radius: 50%;
+    border-radius: 25px;
 }
 
 button:hover {
@@ -77,27 +77,23 @@ button:hover {
 }
 
 .text-display-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     width: 60%;
 }
 
 .text-display {
-    height: 35%;
+    height: 45%;
     border-radius: 25px;
     margin: 3%;
     background-color: white;
     box-shadow: 0px 0px 5px 5px orange;
+    overflow: auto;
 }
 
 .text {
     padding: 2%;
-}
-
-.result-display {
-    height: 15%;
-    border-radius: 25px;
-    margin: 3%;
-    background-color: white;
-    box-shadow: 0px 0px 5px 5px orange;
 }
 
 .buttons-container {

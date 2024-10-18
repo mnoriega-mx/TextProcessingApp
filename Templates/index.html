@@ -11,8 +11,10 @@
 <body>
     <div class="main-container">
         <form action="/process" method="post" enctype="multipart/form-data" class="content-container">
+            <input type="hidden" id="file1-hidden" name="file1-hidden">
+            <input type="hidden" id="file2-hidden" name="file2-hidden">
+            
             <div class="title-container">
-                <!-- Custom file upload button for file1 -->
                 <div class="file-upload-container">
                     <label for="file1" class="custom-file-upload">
                         <button type="button" class="upload-button" id="file1-button">Text 1</button>
@@ -22,7 +24,6 @@
                 
                 <h1 class="title">Text Processing App</h1>
     
-                <!-- Custom file upload button for file2 -->
                 <div class="file-upload-container">
                     <label for="file2" class="custom-file-upload">
                         <button type="button" class="upload-button" id="file2-button">Text 2</button>
@@ -34,22 +35,18 @@
             <div class="info-container">
                 <div class="text-display-container">
                     <div class="text-display">
-                        <pre class="text">{{ text1|safe }}</pre>
+                        <pre class="text"></pre>
                     </div>
                     <div class="text-display">
-                        <pre class="text">{{ text2|safe }}</pre>
-                    </div>
-                    <div class="result-display">
-                        <pre class="text">{{ result|safe }}</pre>
+                        <pre class="text"></pre>
                     </div>
                 </div>
     
                 <div class="buttons-container">
-                    <!-- Submit buttons for algorithms -->
                     <button type="submit" name="algorithm" value="LCS" class="algorithm-button">LCS Similarity</button>
                     <button type="submit" name="algorithm" value="Palindrome" class="algorithm-button">Find Largest Palindrome</button>
                     <div class="kmp-container">
-                        <input type="text" id="pattern" name="pattern" style="margin: 15px; border-radius: 25px; border: none;">
+                        <input type="text" id="pattern" name="pattern" style="margin: 15px; border-radius: 25px; border: none; padding: 5px;">
                         <button type="submit" name="algorithm" value="KMP" class="kmp-button">KMP Search</button>
                     </div>
                 </div>
@@ -66,3 +63,4 @@
     </div>
 </body>
 </html>
+
