@@ -3,6 +3,9 @@ $(document).ready(function() {
     let file2Content = null;
     let currentMatch = 0;
 
+    // Hide the LCS button initially
+    $('#lcs-button').hide();
+
     // Autocomplete functionality
     $('#autocomplete').on('input', function() {
         var prefix = $(this).val();
@@ -53,6 +56,10 @@ $(document).ready(function() {
                 file2Content = e.target.result;
                 originalText2 = file2Content;  // Store the original text when file is loaded
                 $('.text-display:nth-child(2) pre').text(file2Content);
+                // Show the LCS button now that file2Content is available
+                if (file2Content) {
+                    $('#lcs-button').show();
+                }
             }
             reader.readAsText(file);
         }

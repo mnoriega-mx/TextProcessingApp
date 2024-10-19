@@ -1,0 +1,3 @@
+struct Edge {
+    int src;
+    int dest;
