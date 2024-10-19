@@ -148,3 +148,25 @@ button:hover {
     margin: 3%;
     background-color: orange;
 }
+
+.search {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding-right: 2%;
+}
+
+.search-box {
+    margin: 15px;
+    margin-right: 5px;
+    border-radius: 25px;
+    border: none;
+    padding: 5px;
+}
+
+
+.navigate {
+    width: 20%;
+    height: 50%;
+    border-radius: 25px;
+}

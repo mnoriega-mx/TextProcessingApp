@@ -46,7 +46,11 @@
                     <button type="submit" name="algorithm" value="LCS" class="algorithm-button">LCS Similarity</button>
                     <button type="submit" name="algorithm" value="Palindrome" class="algorithm-button">Find Largest Palindrome</button>
                     <div class="kmp-container">
-                        <input type="text" id="pattern" name="pattern" style="margin: 15px; border-radius: 25px; border: none; padding: 5px;">
+                        <div class="search">
+                            <input type="text" id="pattern" name="pattern" class="search-box">
+                            <button type="button" class="navigate" id="prevMatch">&#8592;</button>
+                            <button type="button" class="navigate" id="nextMatch">&#8594;</button>
+                        </div>
                         <button type="submit" name="algorithm" value="KMP" class="kmp-button">KMP Search</button>
                     </div>
                 </div>
@@ -61,6 +65,50 @@
             </div>
         </form>
     </div>
+    <script>
+        let currentMatch = 0;
+
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            currentMatch = 0; // Reset when a new search is made
+            fetch('/process', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerHTML = data.result;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        document.getElementById('prevMatch').addEventListener('click', function() {
+            currentMatch = Math.max(currentMatch - 1, 0);
+            navigateMatch(currentMatch);
+        });
+
+        document.getElementById('nextMatch').addEventListener('click', function() {
+            currentMatch++;
+            navigateMatch(currentMatch);
+        });
+
+        function navigateMatch(matchIndex) {
+            const formData = new FormData(document.getElementById('searchForm'));
+            formData.append('current_match', matchIndex);
+            fetch('/navigate', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerHTML = data.result;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
 </body>
 </html>
+
+
 

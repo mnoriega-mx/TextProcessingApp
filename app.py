@@ -7,44 +7,44 @@ from trie import Trie  # Import Trie class
 app = Flask(__name__)
 trie = Trie()
 
+# Global variables to track matches and current match index
+current_matches = []
+current_match = 0
+
 @app.route('/')
 def index():
     return render_template('index.html')
 
 @app.route('/process', methods=['POST'])
 def process():
-    # Retrieve the file content from the form data instead of request.files
+    global current_matches, current_match
+
     text1 = request.form.get('file1Content', '')
-    text2 = request.form.get('file2Content', None)
+    pattern = request.form.get('pattern', '')
     algorithm = request.form.get('algorithm', '')
-    
+
     if not text1:
         return jsonify({"error": "Text 1 is required"}), 400
 
-    result = ""
+    result = text1
 
     # Insert words into Trie for auto-completion
     for word in text1.split():
         trie.insert(word)
 
-    if algorithm == 'KMP':
-        pattern = request.form.get('pattern', '')
-        if pattern:  # Only search if a pattern is provided
-            matches = list(KMP_search(text1, pattern))
-            for match in matches:
-                text1 = text1[:match] + '<span class="highlight-yellow">' + text1[match:match+len(pattern)] + '</span>' + text1[match+len(pattern):]
-        else:
-            # If pattern is empty, return the original text without highlights
-            text1 = text1
+    if algorithm == 'KMP' and pattern:
+        current_matches = list(KMP_search(text1, pattern))
+        current_match = 0  # Reset to the first match
+        if current_matches:
+            match = current_matches[current_match]
+            result = text1[:match] + '<span class="highlight-yellow">' + text1[match:match+len(pattern)] + '</span>' + text1[match+len(pattern):]
 
-        result = text1
-
-    elif algorithm == 'LCS' and text2:
+    elif algorithm == 'LCS':
+        text2 = request.form.get('file2Content', '')
         result = LCS(text1, text2)
-        # Highlight LCS in both text1 and text2
+
         text1_highlighted = text1.replace(result, f'<span class="highlight-blue">{result}</span>')
         text2_highlighted = text2.replace(result, f'<span class="highlight-blue">{result}</span>')
-
         # Return both highlighted texts and algorithm name
         return jsonify({"text1": text1_highlighted, "text2": text2_highlighted, "algorithm": algorithm})
 
@@ -52,11 +52,30 @@ def process():
         palindrome = manacher(text1)
         result = text1.replace(palindrome, f'<span class="highlight-green">{palindrome}</span>')
 
-    # Return the result and the algorithm name
     return jsonify({"result": result, "algorithm": algorithm})
 
+@app.route('/navigate', methods=['POST'])
+def navigate():
+    print("Navigate")
+    global current_matches, current_match
 
+    text1 = request.form.get('file1Content', '')
+    pattern = request.form.get('pattern', '')
+    direction = request.form.get('direction')
 
+    if direction == 'left':
+        current_match = max(current_match - 1, 0)  # Decrement, but not below 0
+    elif direction == 'right':
+        current_match = min(current_match + 1, len(current_matches) - 1)  # Increment, but not beyond match count
+
+    if not current_matches or current_match >= len(current_matches):
+        return jsonify({"result": text1})
+
+    print(current_match)
+    match = current_matches[current_match]
+    result = text1[:match] + '<span class="highlight-yellow">' + text1[match:match+len(pattern)] + '</span>' + text1[match+len(pattern):]
+
+    return jsonify({"result": result})
 
 @app.route('/autocomplete', methods=['GET'])
 def autocomplete():
@@ -66,5 +85,3 @@ def autocomplete():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-

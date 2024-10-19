@@ -3,6 +3,7 @@ def KMP_search(text, pattern):
     lps = [0] * len(pattern)
     j = 0  # index for pattern
     i = 0  # index for text
+    patterns = []
     while i < len(text):
         if pattern[j] == text[i]:
             i += 1
